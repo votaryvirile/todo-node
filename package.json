@@ -1,0 +1,36 @@
+{
+  "name": "todo-node",
+  "version": "0.1.0",
+  "description": "Todo app to Update tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=local nodemon src/index.js",
+    "dev": "NODE_ENV=dev node index.js",
+    "prod": "NODE_ENV=prod node index.js"
+  },
+  "keywords": [
+    "Nodejs",
+    "Todo",
+    "Tasks"
+  ],
+  "author": "Vimal Radhakrishnan",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.543.0",
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.7.12",
+    "multer": "^1.4.2",
+    "redis": "^2.8.0",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "casual": "^1.6.2",
+    "dotenv": "^8.2.0"
+  }
+}
