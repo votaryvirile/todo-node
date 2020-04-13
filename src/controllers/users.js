@@ -23,8 +23,14 @@ exports.new = function (req, res) {
   try {
     let lastAtPos = req.body.email.lastIndexOf('@');
     let lastDotPos = req.body.email.lastIndexOf('.');
-    if(req.body.email.length === 0 || req.body.name.length <=3 || !req.body.name.match(/^[a-zA-Z0-9]+$/) || 
-    !req.body.phone.match(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/g) || !req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/) ||
+    // Check to email and name field input is available or not
+    if(req.body.email.length === 0 || req.body.name.length <=3 || 
+      // !req.body.name.match(/^[a-zA-Z0-9]+$/) || 
+    //Check phone Number and number of digits (Set to 10)
+    !req.body.phone.match(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/g) ||
+    //Check password for uppercase, lowercase, number and minimum 6characters
+     !req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/) ||
+     //Check email format
     !(lastAtPos < lastDotPos && lastAtPos > 0 && req.body.email.indexOf('@@') == -1 && req.body.email.indexOf('..') == -1&& lastDotPos > 2 && (req.body.email.length - lastDotPos) > 2)) {
       res.status(422).json({
         status: 'missing_field',
@@ -51,6 +57,9 @@ exports.new = function (req, res) {
             user.save(async function (err, userDetails) {
               if (err) res.status(404).send(err);
               else {
+                //This mailer requires a AWS SES Service, for which environment variable is neccessary
+                //Set your .env file with aws access key and secret key, with a minimum sandbox configuration
+
                 // var subject = 'Welcome Email';
                 // var body = `<b>Dear ${req.body.name},</b>\n\n` + 
                 //         `<p>Your Account is successfully created with us</p>\n\n` +
@@ -161,6 +170,8 @@ exports.profile = function (req, res) {
   });
 }
 
+//Not integrated with UI since it requires email service. 
+// (If needed I could configure for specific email ids alone, because of SES Sandbox limitation)
 exports.reset = function (req, res) {
  try {
     User.find({ email: req.body.email }, function (err, user) {
@@ -283,6 +294,8 @@ exports.index = function (req, res) {
   });
 };
 
+
+//This api is used to remove user from the redis thread, since session is managed in redis Session Storage
 exports.logout = function(req, res) {
   const accessKey = req.headers["x-api-key"];
   redisClient.hmget(accessKey, "user_token", "user_id" , function (err, activeUser) {

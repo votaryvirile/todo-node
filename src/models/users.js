@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
   //since validation is handled in the code, this is set to false to reduce process time
   //Validation is handled in code, since node v8 engine is faster than the native mongoose engine
 
-  //For testing purpose you may uncomment it
+  //For testing purpose you may comment it
   validateBeforeSave: false,
 });
 
