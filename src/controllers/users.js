@@ -1,21 +1,9 @@
 const bcrypt = require('bcryptjs');
-const redis = require('redis');
 const crypto = require('crypto');
-
-const isDev = process.env.NODE_ENV === 'dev';
-const isProd = process.env.NODE_ENV === 'prod';
-
-if(isDev || isProd) {
-var redisClient = redis.createClient({
-                port: 6379,
-                host: 'redis',
-              });
-}  else {
-  var redisClient = redis.createClient();
-}
 
 User = require('../models/users');
 
+var redisClient = require('../utils/redis');
 var sendMail = require('../utils/mailer');
 const uuid = require('../utils/uuidGenerator');
 
